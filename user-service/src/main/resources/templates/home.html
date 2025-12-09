@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Jewelry Store - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .welcome-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #5568d3;
+        }
+        .btn-logout {
+            background: #2a39aa;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-logout:hover {
+            background: #222c8a;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="header-content">
+        <h1>🎀 Jewelry Store</h1>
+        <div class="user-info">
+            <span>Hello, {user.name}!</span>
+            <form action="/logout" method="post">
+                <button type="submit" class="btn btn-logout">Logout</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="welcome-card">
+        <h2>Welcome back, {user.name}!</h2>
+        <p>Email: {user.email}</p>
+        <p>Role: {user.role}</p>
+    </div>
+
+    <div class="cards-grid">
+        <div class="card">
+            <h3>Catalog</h3>
+            <p>Browse our exclusive jewelry collection</p>
+            <a href="/products" class="btn">View Products</a>
+        </div>
+
+        <div class="card">
+            <h3>My Orders</h3>
+            <p>Check your order history and status</p>
+            <a href="/orders" class="btn">View Orders</a>
+        </div>
+
+        <div class="card">
+            <h3>Reviews</h3>
+            <p>Read and write product reviews</p>
+            <a href="/reviews" class="btn">View Reviews</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jewelry Store</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 30px;
+    }
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .btn {
+      padding: 15px 30px;
+      background: #667eea;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.3s;
+      font-size: 16px;
+    }
+    .btn:hover {
+      background: #5568d3;
+    }
+    .btn-secondary {
+      background: #764ba2;
+    }
+    .btn-secondary:hover {
+      background: #63408a;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1> ˖ ࣪⊹𐙚 Jewelry Store 𐙚࣪⊹ ˖</h1>
+  <p>Welcome to our online jewelry shop</p>
+  <div class="nav-links">
+    <a href="/products" class="btn">View Products</a>
+    <a href="/orders" class="btn btn-secondary">My Orders</a>
+    <a href="/reviews" class="btn btn-secondary">Reviews</a>
+  </div>
+</div>
+</body>
+</html>
