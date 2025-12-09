@@ -89,12 +89,12 @@
 <body>
 <div class="header">
     <div class="header-content">
-        <h1>🎀 Jewelry Store</h1>
+        <h1>˖ ࣪⊹𐙚 Jewelry Store 𐙚 ࣪⊹ ˖</h1>
         <div class="user-info">
             <span>Hello, {user.name}!</span>
-            <form action="/logout" method="post">
-                <button type="submit" class="btn btn-logout">Logout</button>
-            </form>
+            {!<form action="/q/logout" method="post">!}
+                {!<button type="submit" class="btn btn-logout">Logout</button>!}
+            {!</form>!}
         </div>
     </div>
 </div>
@@ -102,8 +102,8 @@
 <div class="container">
     <div class="welcome-card">
         <h2>Welcome back, {user.name}!</h2>
-        <p>Email: {user.email}</p>
-        <p>Role: {user.role}</p>
+        {!<p>Email: {user.email}</p>!}
+        {!<p>Role: {user.role}</p>!}
     </div>
 
     <div class="cards-grid">

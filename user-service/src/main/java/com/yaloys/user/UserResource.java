@@ -1,4 +1,4 @@
-package com.yaloys.user.controllers;
+package com.yaloys.user;
 
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
@@ -16,6 +16,9 @@ import java.util.Map;
 public class UserResource {
 
     @Inject
+    Template index;
+
+    @Inject
     Template home;
 
     @Inject
@@ -25,8 +28,7 @@ public class UserResource {
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance index() {
         if (securityIdentity.isAnonymous()) {
-            // Return a simple HTML page for non-authenticated users
-            return home.data("user", getAnonymousUser());
+            return index.instance();
         }
         return home.data("user", getCurrentUser());
     }
@@ -39,21 +41,35 @@ public class UserResource {
         return home.data("user", getCurrentUser());
     }
 
-    private Map<String, String> getCurrentUser()
-    {
+    @GET
+    @Path("/products")
+    @Authenticated
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance products() {
+        return home.data("user", getCurrentUser());
+    }
+
+    @GET
+    @Path("/orders")
+    @Authenticated
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance orders() {
+        return home.data("user", getCurrentUser());
+    }
+
+    @GET
+    @Path("/reviews")
+    @Authenticated
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance reviews() {
+        return home.data("user", getCurrentUser());
+    }
+
+    private Map<String, String> getCurrentUser() {
         Map<String, String> user = new HashMap<>();
         user.put("name", securityIdentity.getPrincipal().getName());
         user.put("email", securityIdentity.getPrincipal().getName());
         user.put("role", securityIdentity.getRoles().toString());
-        return user;
-    }
-
-    private Map<String, String> getAnonymousUser()
-    {
-        Map<String, String> user = new HashMap<>();
-        user.put("name", "Guest");
-        user.put("email", "");
-        user.put("role", "guest");
         return user;
     }
 }
