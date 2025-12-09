@@ -21,24 +21,23 @@ public class ReviewRepository {
 
     private void initializeData() {
         reviews.put(1, new Review(1, 1, 5, "Perfect engagement ring!",
-        "Absolutely stunning diamond ring. The quality is exceptional and my fiancée loves it!",
-        LocalDateTime.now().minusDays(10)));
+        "Absolutely stunning diamond ring. The quality is exceptional and my fiancée loves it!", LocalDateTime.now()));
 
         reviews.put(2, new Review(2, 1, 4, "Beautiful but expensive",
-        "The ring is gorgeous and well-crafted. Worth the price but it's quite an investment.",
-        LocalDateTime.now().minusDays(5)));
+        "The ring is gorgeous and well-crafted. Worth the price but it's quite an investment.", LocalDateTime.now()));
 
         reviews.put(3, new Review(3, 2, 5, "Luxurious piece",
-        "This Cartier necklace is absolutely breathtaking. The ruby is vibrant and the gold work is exquisite.",
-        LocalDateTime.now().minusDays(8)));
+        "This Cartier necklace is absolutely breathtaking. The ruby is vibrant and the gold work is exquisite.", LocalDateTime.now()));
 
         reviews.put(4, new Review(4, 2, 5, "Stunning craftsmanship",
-        "Every detail is perfect. The necklace feels luxurious and looks even better in person.",
-        LocalDateTime.now().minusDays(3)));
+        "Every detail is perfect. The necklace feels luxurious and looks even better in person.", LocalDateTime.now()));
 
         reviews.put(5, new Review(5, 3, 4, "Elegant earrings",
-        "Beautiful sapphire and diamond combination. The white gold setting is very elegant.",
-        LocalDateTime.now().minusDays(6)));
+        "Beautiful sapphire and diamond combination. The white gold setting is very elegant.", LocalDateTime.now()));
+
+        reviews.put(6, new Review(6, 1, 1, "Lovely ring", "Amazing quality and design", LocalDateTime.now()));
+        reviews.put(7, new Review(1, 1, 5, "Perfect engagement ring from my fiancée!",
+                "Absolutely stunning diamond ring. The quality is exceptional and my fiancée loves it!", LocalDateTime.now()));
     }
 
     public List<Review> findAll() {

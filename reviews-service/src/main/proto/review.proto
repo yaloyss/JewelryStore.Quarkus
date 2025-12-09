@@ -1,0 +1,27 @@
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.jewelry.grpc.review";
+
+package review;
+
+service ReviewService {
+  rpc GetReviewsByProduct(ReviewRequest) returns (ReviewsResponse);
+}
+
+message ReviewRequest {
+  int32 product_id = 1;
+}
+
+message ReviewResponse {
+  int32 id = 1;
+  int32 product_id = 2;
+  int32 rating = 3;
+  string title = 4;
+  string body = 5;
+}
+
+message ReviewsResponse {
+  repeated ReviewResponse reviews = 1;
+}
