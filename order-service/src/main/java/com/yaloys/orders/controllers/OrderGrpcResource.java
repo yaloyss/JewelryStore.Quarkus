@@ -6,6 +6,7 @@ import com.yaloys.orders.repositories.OrderRepository;
 import com.yaloys.products.grpc.product.ProductServiceGrpc;
 import com.yaloys.products.grpc.product.ProductsRequest;
 import com.yaloys.products.grpc.product.ProductsResponse;
+import com.yaloys.orders.dtos.ProductDTO;
 import io.quarkus.grpc.GrpcClient;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -37,17 +38,14 @@ public class OrderGrpcResource {
         Order order = orderOpt.get();
         Map<String, Object> enrichedOrder = new HashMap<>();
         enrichedOrder.put("order", order);
+        //getting ids from order items
+        List<Integer> productIds = order.getOrderItems().stream().map(OrderItem::getProductId).collect(Collectors.toList());
 
-        // Get product IDs from order items
-        List<Integer> productIds = order.getOrderItems().stream()
-                .map(OrderItem::getProductId)
-                .collect(Collectors.toList());
-
-        // Fetch products via gRPC
         try {
             ProductsRequest request = ProductsRequest.newBuilder().addAllIds(productIds).build();
             ProductsResponse response = productServiceStub.getProducts(request);
-            enrichedOrder.put("products", response.getProductsList());
+            List<ProductDTO> productsDto = response.getProductsList().stream().map(ProductDTO::new).collect(Collectors.toList());
+            enrichedOrder.put("products", productsDto);
         }
         catch (Exception e) {
             System.out.println("gRPC call failed: " + e.getMessage());

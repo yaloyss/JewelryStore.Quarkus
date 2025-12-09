@@ -38,8 +38,6 @@ public class OrderEnrichedResource {
         Order order = orderOpt.get();
         Map<String, Object> enrichedOrder = new HashMap<>();
         enrichedOrder.put("order", order);
-
-        // Get product details for each order item
         Map<Integer, ProductO> products = new HashMap<>();
         for (OrderItem item : order.getOrderItems()) {
             try

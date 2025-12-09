@@ -69,8 +69,7 @@ public class ProductResource {
 
     @POST
     @Path("/{productId}/stones/{stoneId}")
-    public Response addStoneToProduct(@PathParam("productId") Integer productId,
-                                      @PathParam("stoneId") Integer stoneId) {
+    public Response addStoneToProduct(@PathParam("productId") Integer productId, @PathParam("stoneId") Integer stoneId) {
         if (!productRepository.existsById(productId)) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -80,8 +79,7 @@ public class ProductResource {
 
     @DELETE
     @Path("/{productId}/stones/{stoneId}")
-    public Response removeStoneFromProduct(@PathParam("productId") Integer productId,
-                                           @PathParam("stoneId") Integer stoneId) {
+    public Response removeStoneFromProduct(@PathParam("productId") Integer productId, @PathParam("stoneId") Integer stoneId) {
         if (!productRepository.existsById(productId)) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
