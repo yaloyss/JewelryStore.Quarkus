@@ -39,14 +39,15 @@ public class ProductWithReviewsResource {
         Map<String, Object> enrichedProduct = new HashMap<>();
         enrichedProduct.put("product", product);
 
-        try {
-            List<Review> reviews = reviewClient.getReviewsByProductId(id);
-            enrichedProduct.put("reviews", reviews);
-        }
-        catch (Exception e) {
-            System.out.println("Could not fetch reviews for product: " + id);
-            enrichedProduct.put("reviews", List.of());
-        }
+        List<Review> reviews = reviewClient.getReviewsByProductId(id);
+        enrichedProduct.put("reviews", reviews);
+//        try {
+//
+//        }
+//        catch (Exception e) {
+//            System.out.println("Could not fetch reviews for product: " + id);
+//            enrichedProduct.put("reviews", List.of());
+//        }
         return Response.ok(enrichedProduct).build();
     }
 }

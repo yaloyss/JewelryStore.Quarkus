@@ -19,7 +19,9 @@ public class ProductResource {
 
     @GET
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        List<Product> products = productRepository.findAll();
+        System.out.println("Products: " + products);
+        return products;
     }
 
     @GET
