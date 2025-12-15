@@ -2,76 +2,79 @@ package com.yaloys.reviews.controllers;
 
 import com.yaloys.reviews.models.Discussion;
 import com.yaloys.reviews.models.Message;
-import com.yaloys.reviews.repositories.DiscussionRepository;
-import jakarta.inject.Inject;
+import io.quarkus.security.Authenticated;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
-import java.util.Optional;
 
 @Path("/api/discussions")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Authenticated
 public class DiscussionResource {
-
-    @Inject
-    DiscussionRepository discussionRepository;
 
     @GET
     public List<Discussion> getAllDiscussions() {
-        return discussionRepository.findAll();
+        return Discussion.listAll();
     }
 
     @GET
     @Path("/{id}")
     public Response getDiscussionById(@PathParam("id") Integer id) {
-        Optional<Discussion> discussion = discussionRepository.findById(id);
+        Discussion discussion = Discussion.findByDiscussionId(id);
 
-        if (discussion.isPresent()) {
-            return Response.ok(discussion.get()).build();
+        if (discussion != null) {
+            return Response.ok(discussion).build();
         }
-
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @GET
     @Path("/review/{reviewId}")
     public Response getDiscussionByReviewId(@PathParam("reviewId") Integer reviewId) {
-        Optional<Discussion> discussion = discussionRepository.findByReviewId(reviewId);
+        Discussion discussion = Discussion.findByReviewId(reviewId);
 
-        if (discussion.isPresent()) {
-            return Response.ok(discussion.get()).build();
+        if (discussion != null) {
+            return Response.ok(discussion).build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @POST
+    @Transactional
     public Response createDiscussion(Discussion discussion) {
-        Discussion savedDiscussion = discussionRepository.save(discussion);
-        return Response.status(Response.Status.CREATED).entity(savedDiscussion).build();
+        discussion.persist();
+        return Response.status(Response.Status.CREATED).entity(discussion).build();
     }
 
     @POST
     @Path("/{id}/messages")
+    @Transactional
     public Response addMessage(@PathParam("id") Integer discussionId, Message message) {
-        Message savedMessage = discussionRepository.addMessage(discussionId, message);
+        Discussion discussion = Discussion.findByDiscussionId(discussionId);
 
-        if (savedMessage != null) {
-            return Response.status(Response.Status.CREATED).entity(savedMessage).build();
+        if (discussion == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+
+        message.discussion = discussion;
+        message.persist();
+        return Response.status(Response.Status.CREATED).entity(message).build();
     }
 
     @DELETE
     @Path("/{id}")
+    @Transactional
     public Response deleteDiscussion(@PathParam("id") Integer id) {
-        Optional<Discussion> discussion = discussionRepository.findById(id);
+        Discussion discussion = Discussion.findByDiscussionId(id);
 
-        if (discussion.isEmpty()) {
+        if (discussion == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        discussionRepository.deleteById(id);
+
+        discussion.delete();
         return Response.noContent().build();
     }
 }

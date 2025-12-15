@@ -1,29 +1,31 @@
 package com.yaloys.reviews.models;
 
-import lombok.Getter;
-import lombok.Setter;
-import java.util.ArrayList;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
-public class Discussion {
+@Entity
+@Table(name = "discussions")
+public class Discussion extends PanacheEntityBase {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "discussion_id")
     private Integer discussionId;
+
+    @Column(name = "review_id",nullable = false)
     private Integer reviewId;
+
+    @OneToMany(mappedBy = "discussion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
 
-    public Discussion() {
-        this.messages = new ArrayList<>();
-    }
+    public Discussion () {}
 
-    public Discussion(Integer discussionId, Integer reviewId) {
-        this.discussionId = discussionId;
-        this.reviewId = reviewId;
-        this.messages = new ArrayList<>();
+    public static Discussion findByDiscussionId(Integer discussionId) {
+        return find("discussionId", discussionId).firstResult();
     }
-
-    public void addMessage(Message message) {
-        this.messages.add(message);
+    public static Discussion findByReviewId(Integer reviewId) {
+        return find("reviewId", reviewId).firstResult();
     }
 
     @Override

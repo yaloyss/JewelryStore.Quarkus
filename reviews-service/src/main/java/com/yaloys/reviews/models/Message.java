@@ -1,31 +1,37 @@
 package com.yaloys.reviews.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-public class Message {
+@Entity
+@Table(name = "messages")
+public class Message extends PanacheEntityBase {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "message_id")
     private Integer messageId;
-    private Integer discussionId;
+
+    @ManyToOne
+    @JoinColumn(name = "discussion_id")
+    public Discussion discussion;
+
+    @Column(nullable = false)
     private String content;
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public Message() {}
-
-    public Message(Integer messageId, Integer discussionId, String content, LocalDateTime createdAt) {
-        this.messageId = messageId;
-        this.discussionId = discussionId;
-        this.content = content;
-        this.createdAt = createdAt;
+    public Message() {
+        this.createdAt = LocalDateTime.now();
     }
 
     @Override
     public String toString() {
         return "Message{" +
                 "messageId=" + messageId +
-                ", discussionId=" + discussionId +
+                ", discussion=" + discussion +
                 ", content='" + content + '\'' +
                 ", createdAt=" + createdAt +
                 '}';

@@ -1,28 +1,48 @@
 package com.yaloys.reviews.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Getter
-@Setter
-public class Review {
+@Entity
+@Table(name = "reviews")
+public class Review extends PanacheEntityBase {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "review_id")
     private Integer reviewId;
-    private Integer rating;
-    private Integer productId;
-    private String title;
-    private String body;
+
+    @Column(nullable = false)
+    public Integer rating;
+
+    @Column(nullable = false)
+    public Integer productId;
+
+    @Column(nullable = false)
+    public String title;
+
+    @Column(nullable = false)
+    public String body;
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public Review() {}
+    public Review() {
+        this.createdAt = LocalDateTime.now();
+    }
 
-    public Review(Integer reviewId, Integer rating, Integer productId, String title, String body, LocalDateTime createdAt) {
-        this.reviewId = reviewId;
-        this.rating = rating;
-        this.productId = productId;
-        this.title = title;
-        this.body = body;
-        this.createdAt = createdAt;
+    public static List<Review> findByProductId(Integer productId) {
+        return list("productId", productId);
+    }
+
+    public static Review findByRatingId(Integer ratingId) {
+        return find("ratingId", ratingId).firstResult();
+    }
+
+    public static Review findByReviewId(Integer reviewId) {
+        return findById(reviewId);
     }
 
     @Override

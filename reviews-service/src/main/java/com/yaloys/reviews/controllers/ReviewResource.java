@@ -1,34 +1,31 @@
 package com.yaloys.reviews.controllers;
 
 import com.yaloys.reviews.models.Review;
-import com.yaloys.reviews.repositories.ReviewRepository;
-import jakarta.inject.Inject;
+import io.quarkus.security.Authenticated;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
-import java.util.Optional;
 
 @Path("/api/reviews")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Authenticated
 public class ReviewResource {
-
-    @Inject
-    ReviewRepository reviewRepository;
 
     @GET
     public List<Review> getAllReviews() {
-        return reviewRepository.findAll();
+        return Review.listAll();
     }
 
     @GET
     @Path("/{id}")
     public Response getReviewById(@PathParam("id") Integer id) {
-        Optional<Review> review = reviewRepository.findById(id);
+        Review review = Review.findByReviewId(id);
 
-        if (review.isPresent()) {
-            return Response.ok(review.get()).build();
+        if (review != null) {
+            return Response.ok(review).build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
@@ -36,39 +33,43 @@ public class ReviewResource {
     @GET
     @Path("/product/{productId}")
     public List<Review> getReviewsByProductId(@PathParam("productId") Integer productId) {
-        return reviewRepository.findByProductId(productId);
+        return Review.findByProductId(productId);
     }
 
     @POST
+    @Transactional
     public Response createReview(Review review) {
-        Review savedReview = reviewRepository.save(review);
-        return Response.status(Response.Status.CREATED).entity(savedReview).build();
+        review.persist();
+        return Response.status(Response.Status.CREATED).entity(review).build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response updateReview(@PathParam("id") Integer id, Review review) {
-        Optional<Review> existingReview = reviewRepository.findById(id);
+    @Transactional
+    public Response updateReview(@PathParam("id") Integer id, Review updatedReview) {
+        Review review = Review.findByReviewId(id);
 
-        if (existingReview.isEmpty()) {
+        if (review == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        review.setReviewId(id);
-        Review updatedReview = reviewRepository.save(review);
-        return Response.ok(updatedReview).build();
+        review.productId = updatedReview.productId;
+        review.rating = updatedReview.rating;
+        review.title = updatedReview.title;
+        review.body = updatedReview.body;
+        return Response.ok(review).build();
     }
 
     @DELETE
     @Path("/{id}")
+    @Transactional
     public Response deleteReview(@PathParam("id") Integer id) {
-        Optional<Review> review = reviewRepository.findById(id);
+        Review review = Review.findByReviewId(id);
 
-        if (review.isEmpty()) {
+        if (review == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-
-        reviewRepository.deleteById(id);
+        review.delete();
         return Response.noContent().build();
     }
 }
