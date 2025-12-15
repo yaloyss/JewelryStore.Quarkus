@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Reviews - Jewelry Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #d174ad 0%, #d8b7cd 100%);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+        .review-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            transition: transform 0.3s;
+        }
+        .review-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .review-header {
+            margin-bottom: 15px;
+        }
+        .review-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #b63786;
+            margin-bottom: 10px;
+        }
+        .review-rating {
+            color: #ffd700;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .review-body {
+            color: #333;
+            line-height: 1.8;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        .review-meta {
+            color: #999;
+            font-size: 13px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .error {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .no-reviews {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="header-content">
+        <h1>⭐ Product Reviews</h1>
+        <div class="nav">
+            <a href="/home">Home</a>
+            <a href="/products">Products</a>
+            <a href="/orders">Orders</a>
+            <span>Hello, {user.name}!</span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Customer Reviews</h2>
+    <div class="reviews-list">
+        {#for review in reviews}
+        <div class="review-card">
+            <div class="review-header">
+                <div class="review-title">{review.title}</div>
+                <div class="review-rating">{review.rating}★</div>
+            </div>
+            <div class="review-body">{review.body}</div>
+            <div class="review-meta">
+                Product ID: {review.productId} | Posted: {review.createdAt}
+            </div>
+        </div>
+        {/for}
+    </div>
+
+    {#if reviews.isEmpty()}
+        <div class="no-reviews">No reviews available.</div>
+    {/if}
+</div>
+</body>
+</html>

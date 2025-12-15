@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Products - Jewelry Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #D174ADFF 0%, #d8b7cd 100%);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .product-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #b63786;
+            margin-bottom: 10px;
+        }
+        .product-price {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .product-brand {
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .error {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="header-content">
+        <h1>Catalog</h1>
+        <div class="nav">
+            <a href="/home">Home</a>
+            <a href="/orders">Orders</a>
+            <a href="/reviews">Reviews</a>
+            <span>Hello, {user.name}!</span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Our Jewelry Collection</h2>
+    <div class="products-grid">
+        {#for product in products}
+            <div class="product-card">
+                <div class="product-name">{product.name}</div>
+                <div class="product-price">${product.price}</div>
+                <div class="product-brand">Brand: {product.manufacturer}</div>
+                <div class="product-brand">Weight: {product.weight}g</div>
+            </div>
+        {/for}
+
+        {#if products.isEmpty()}
+            <p>No products available at the moment.</p>
+        {/if}
+    </div>
+</div>
+</body>
+</html>

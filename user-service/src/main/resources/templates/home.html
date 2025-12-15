@@ -14,7 +14,7 @@
             background: #f5f5f5;
         }
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #d174ad 0%, #d8b7cd 100%);
             color: white;
             padding: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -59,13 +59,13 @@
             transform: translateY(-5px);
         }
         .card h3 {
-            color: #667eea;
+            color: #b63786;
             margin-bottom: 15px;
         }
         .btn {
             display: inline-block;
             padding: 10px 20px;
-            background: #667eea;
+            background: #d174ad;
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -73,7 +73,7 @@
             transition: background 0.3s;
         }
         .btn:hover {
-            background: #5568d3;
+            background: #b63786;
         }
         .btn-logout {
             background: #2a39aa;
@@ -91,7 +91,7 @@
     <div class="header-content">
         <h1>˖ ࣪⊹𐙚 Jewelry Store 𐙚 ࣪⊹ ˖</h1>
         <div class="user-info">
-            <span>Hello, {user.name}!</span>
+            {!<span>Hello, {user.name}!</span>!}
             {!<form action="/q/logout" method="post">!}
                 {!<button type="submit" class="btn btn-logout">Logout</button>!}
             {!</form>!}
@@ -102,14 +102,12 @@
 <div class="container">
     <div class="welcome-card">
         <h2>Welcome back, {user.name}!</h2>
-        {!<p>Email: {user.email}</p>!}
-        {!<p>Role: {user.role}</p>!}
     </div>
 
     <div class="cards-grid">
         <div class="card">
             <h3>Catalog</h3>
-            <p>Browse our exclusive jewelry collection</p>
+            <p>Browse our jewelry collection</p>
             <a href="/products" class="btn">View Products</a>
         </div>
 

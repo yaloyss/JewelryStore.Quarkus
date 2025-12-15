@@ -1,25 +1,26 @@
 package com.yaloys.user.clients;
 
-import com.yaloys.user.models.Product;
+import com.yaloys.user.models.Order;
 import io.quarkus.oidc.token.propagation.common.AccessToken;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import java.util.List;
 
-@Path("/api/products")
+@Path("/api/orders")
 @AccessToken
-@RegisterRestClient(configKey = "product-service")
-public interface ProductClient {
+@RegisterRestClient(configKey = "order-service")
+public interface OrderClient {
 
     @GET
-    List<Product> getAllProducts();
+    @Produces(MediaType.APPLICATION_JSON)
+    List<Order> getAllOrders();
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    Product getProductById(@PathParam("id") Integer id);
+    Order getOrderById(@PathParam("id") Integer id);
 }
