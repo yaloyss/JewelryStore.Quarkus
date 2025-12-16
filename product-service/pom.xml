@@ -60,9 +60,25 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-orm-panache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jdbc-postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-messaging-rabbitmq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--<dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-rest-client-oidc-token-propagation</artifactId>
+        </dependency>-->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
@@ -76,10 +92,6 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-qute</artifactId>
         </dependency>
-        <!--<dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-rest-client-oidc-token-propagation</artifactId>
-        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
