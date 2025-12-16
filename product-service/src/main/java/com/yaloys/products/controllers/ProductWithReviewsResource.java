@@ -29,7 +29,7 @@ public class ProductWithReviewsResource {
     @GET
     @Path("/{id}")
     public Response getProductWithReviews(@PathParam("id") Integer id) {
-        Optional<Product> productOpt = Optional.ofNullable(productRepository.findById(id));
+        Optional<Product> productOpt = Optional.ofNullable(productRepository.findById(Long.valueOf(id)));
 
         if (productOpt.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).build();

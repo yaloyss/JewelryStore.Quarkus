@@ -10,9 +10,59 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
+//@Path("/api/stones")
+////@Produces(MediaType.APPLICATION_JSON)
+//@Produces(MediaType.TEXT_PLAIN)
+//@Consumes(MediaType.APPLICATION_JSON)
+//public class StoneResource {
+//
+//    @Inject
+//    StoneRepository stoneRepository;
+//
+//    @GET
+//    public List<Stone> getAllStones() {
+//        return com.yaloys.products.repositories.StoneRepository.findAll();
+//    }
+//
+//    @GET
+//    @Path("/{id}")
+//    public Response getStoneById(@PathParam("id") Integer id) {
+//        return com.yaloys.products.repositories.StoneRepository.findById(id)
+//                .map(stone -> Response.ok(stone).build())
+//                .orElse(Response.status(Response.Status.NOT_FOUND).build());
+//    }
+//
+//    @POST
+//    public Response createStone(Stone stone) {
+//        Stone saved = com.yaloys.products.repositories.StoneRepository.save(stone);
+//        return Response.status(Response.Status.CREATED).entity(saved).build();
+//    }
+//
+//    @PUT
+//    @Path("/{id}")
+//    public Response updateStone(@PathParam("id") Integer id, Stone stone) {
+//        if (!com.yaloys.products.repositories.StoneRepository.existsById(id)) {
+//            return Response.status(Response.Status.NOT_FOUND).build();
+//        }
+//        stone.setStoneId(id);
+//        Stone updated = com.yaloys.products.repositories.StoneRepository.save(stone);
+//        return Response.ok(updated).build();
+//    }
+//
+//    @DELETE
+//    @Path("/{id}")
+//    public Response deleteStone(@PathParam("id") Integer id) {
+//        if (!com.yaloys.products.repositories.StoneRepository.existsById(id)) {
+//            return Response.status(Response.Status.NOT_FOUND).build();
+//        }
+//        com.yaloys.products.repositories.StoneRepository.deleteById(id);
+//        return Response.noContent().build();
+//    }
+//}
+import jakarta.transaction.Transactional;
+
 @Path("/api/stones")
-//@Produces(MediaType.APPLICATION_JSON)
-@Produces(MediaType.TEXT_PLAIN)
+@Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class StoneResource {
 
@@ -21,41 +71,34 @@ public class StoneResource {
 
     @GET
     public List<Stone> getAllStones() {
-        return com.yaloys.products.repositories.StoneRepository.findAll();
+        return stoneRepository.listAll();
     }
 
     @GET
     @Path("/{id}")
     public Response getStoneById(@PathParam("id") Integer id) {
-        return com.yaloys.products.repositories.StoneRepository.findById(id)
-                .map(stone -> Response.ok(stone).build())
-                .orElse(Response.status(Response.Status.NOT_FOUND).build());
+        return stoneRepository.findByIdOptional(Long.valueOf(id))
+                .map(stone -> Response.ok(stone).build()).orElse(Response.status(Response.Status.NOT_FOUND).build());
     }
 
     @POST
+    @Transactional
     public Response createStone(Stone stone) {
-        Stone saved = com.yaloys.products.repositories.StoneRepository.save(stone);
-        return Response.status(Response.Status.CREATED).entity(saved).build();
+        stoneRepository.persist(stone);
+        return Response.status(Response.Status.CREATED).entity(stone).build();
     }
 
     @PUT
     @Path("/{id}")
+    @Transactional
     public Response updateStone(@PathParam("id") Integer id, Stone stone) {
-        if (!com.yaloys.products.repositories.StoneRepository.existsById(id)) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        stone.setStoneId(id);
-        Stone updated = com.yaloys.products.repositories.StoneRepository.save(stone);
-        return Response.ok(updated).build();
-    }
+        Stone existingStone = stoneRepository.findById(Long.valueOf(id));
 
-    @DELETE
-    @Path("/{id}")
-    public Response deleteStone(@PathParam("id") Integer id) {
-        if (!com.yaloys.products.repositories.StoneRepository.existsById(id)) {
+        if (existingStone == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        com.yaloys.products.repositories.StoneRepository.deleteById(id);
-        return Response.noContent().build();
+
+        existingStone.setName(stone.getName());
+        return Response.ok(existingStone).build();
     }
 }

@@ -1,20 +1,44 @@
 package com.yaloys.products.models;
 
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import java.math.BigDecimal;
-import java.util.List;
 
-@Data
+@Getter
+@Setter
+@Entity
+@Table(name = "products")
 public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Integer productId;
+
+    @Column(nullable = false, length = 100)
     private String name;
+
+    @Column(precision = 10, scale = 2)
     private BigDecimal price;
+
+    @Column(precision = 10, scale = 2)
     private BigDecimal weight;
+
+    @Column(precision = 10, scale = 2)
     private BigDecimal size;
+
+    @Column(length = 100)
     private String manufacturer;
+
+    @Column(name = "metal_id")
     private Integer metalId;
+
+    @Column(name = "category_id")
     private Integer categoryId;
-    private List<Integer> stoneIds;
+
+    @Column(name = "stone_id")
+    private Integer stoneId;
 
     public Product () {}
 
@@ -41,8 +65,7 @@ public class Product {
                 ", size=" + size +
                 ", manufacturer=" + manufacturer +
                 ", metalId=" + metalId +
-                ", stoneIds=" + stoneIds +
+                ", stoneId=" + stoneId +
                 '}';
     }
-
 }

@@ -19,7 +19,7 @@ public class ProductGrpcService extends ProductServiceGrpc.ProductServiceImplBas
 
     @Override
     public void getProduct(ProductRequest request, StreamObserver<ProductResponse> responseObserver) {
-        Product product = productRepository.findById(request.getId());
+        Product product = productRepository.findById((long) request.getId());
 
         if (product != null) {
             ProductResponse response = ProductResponse.newBuilder().setId(product.getProductId()).setName(product.getName())
@@ -38,7 +38,7 @@ public class ProductGrpcService extends ProductServiceGrpc.ProductServiceImplBas
         ProductsResponse.Builder responseBuilder = ProductsResponse.newBuilder();
 
         for (Integer id : request.getIdsList()) {
-            Product product = productRepository.findById(id);
+            Product product = productRepository.findById(Long.valueOf(id));
             if (product != null) {
                 ProductResponse productResponse = ProductResponse.newBuilder().setId(product.getProductId()).setName(product.getName())
                         .setPrice(product.getPrice().toString()).build();
