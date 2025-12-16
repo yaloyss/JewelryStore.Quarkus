@@ -17,13 +17,13 @@ public class Review extends PanacheEntityBase {
     @Column(nullable = false)
     public Integer rating;
 
-    @Column(nullable = false)
+    @Column(name = "product_id", nullable = false)
     public Integer productId;
 
     @Column(nullable = false)
     public String title;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     public String body;
 
     @Column(name = "created_at")
@@ -37,8 +37,8 @@ public class Review extends PanacheEntityBase {
         return list("productId", productId);
     }
 
-    public static Review findByRatingId(Integer ratingId) {
-        return find("ratingId", ratingId).firstResult();
+    public static Review findByRating(Integer rating) {
+        return find("rating", rating).firstResult();
     }
 
     public static Review findByReviewId(Integer reviewId) {

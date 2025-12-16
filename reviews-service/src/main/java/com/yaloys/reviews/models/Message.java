@@ -17,7 +17,7 @@ public class Message extends PanacheEntityBase {
     @JoinColumn(name = "discussion_id")
     public Discussion discussion;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
     @Column(name = "created_at")
