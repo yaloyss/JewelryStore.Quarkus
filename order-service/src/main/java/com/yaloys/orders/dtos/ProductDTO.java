@@ -13,4 +13,10 @@ public class ProductDTO {
         this.name = productResponse.getName();
         this.price = productResponse.getPrice();
     }
+
+    public ProductDTO(Integer productId, String name, String string) {
+        this.Id = productId;
+        this.name = name;
+        this.price = string;
+    }
 }

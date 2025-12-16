@@ -7,7 +7,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
-import java.util.Optional;
+import jakarta.transaction.Transactional;
 
 @Path("/api/orders")
 @Produces(MediaType.APPLICATION_JSON)
@@ -19,54 +19,74 @@ public class OrderResource {
 
     @GET
     public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+        return orderRepository.listAll();
     }
 
     @GET
     @Path("/{id}")
     public Response getOrderById(@PathParam("id") Integer id) {
-        Optional<Order> order = orderRepository.findById(id);
+        return orderRepository.findByIdOptional(Long.valueOf(id))
+                .map(order -> Response.ok(order).build()).orElse(Response.status(Response.Status.NOT_FOUND).build());
+    }
 
-        if (order.isPresent()) {
-            return Response.ok(order.get()).build();
-        }
+    @GET
+    @Path("/customer/{customerId}")
+    public List<Order> getOrdersByCustomerId(@PathParam("customerId") Integer customerId) {
+        return orderRepository.findByCustomerId(customerId);
+    }
 
-        return Response.status(Response.Status.NOT_FOUND).build();
+    @GET
+    @Path("/status/{status}")
+    public List<Order> getOrdersByStatus(@PathParam("status") String status) {
+        return orderRepository.findByStatus(status);
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
     public Response createOrder(Order order) {
-        Order savedOrder = orderRepository.save(order);
-        return Response.status(Response.Status.CREATED).entity(savedOrder).build();
+        orderRepository.persist(order);
+        return Response.status(Response.Status.CREATED).entity(order).build();
     }
 
     @PUT
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
     public Response updateOrder(@PathParam("id") Integer id, Order order) {
-        Optional<Order> existingOrder = orderRepository.findById(id);
+        Order existingOrder = orderRepository.findById(Long.valueOf(id));
 
-        if (existingOrder.isEmpty()) {
+        if (existingOrder == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        order.setOrderId(id);
-        Order updatedOrder = orderRepository.save(order);
-        return Response.ok(updatedOrder).build();
+        existingOrder.setCustomerId(order.getCustomerId());
+        existingOrder.setStatus(order.getStatus());
+        existingOrder.setOrderDate(order.getOrderDate());
+        return Response.ok(existingOrder).build();
+    }
+
+    @PATCH
+    @Path("/{id}/status")
+    @Transactional
+    public Response updateOrderStatus(@PathParam("id") Integer id, @QueryParam("status") String status) {
+        Order order = orderRepository.findById(Long.valueOf(id));
+
+        if (order == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        order.setStatus(status);
+        return Response.ok(order).build();
     }
 
     @DELETE
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
     public Response deleteOrder(@PathParam("id") Integer id) {
-        Optional<Order> order = orderRepository.findById(id);
+        boolean deleted = orderRepository.deleteById(Long.valueOf(id));
 
-        if (order.isEmpty()) {
+        if (!deleted) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-
-        orderRepository.delete(id);
         return Response.noContent().build();
     }
 }

@@ -29,7 +29,7 @@ public class OrderGrpcResource {
     @GET
     @Path("/{id}")
     public Response getOrderWithProductsGrpc(@PathParam("id") Integer id) {
-        Optional<Order> orderOpt = orderRepository.findById(id);
+        Optional<Order> orderOpt = Optional.ofNullable(orderRepository.findById(Long.valueOf(id)));
 
         if (orderOpt.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).build();
