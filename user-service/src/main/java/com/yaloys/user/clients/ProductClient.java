@@ -2,10 +2,7 @@ package com.yaloys.user.clients;
 
 import com.yaloys.user.models.Product;
 import io.quarkus.oidc.token.propagation.common.AccessToken;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import java.util.List;
@@ -22,4 +19,19 @@ public interface ProductClient {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     Product getProductById(@PathParam("id") Integer id);
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    Product createProduct(Product product);
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    Product updateProduct(@PathParam("id") Integer id, Product product);
+
+    @DELETE
+    @Path("/{id}")
+    void deleteProduct(@PathParam("id") Integer id);
 }

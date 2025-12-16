@@ -11,11 +11,15 @@ import io.quarkus.qute.TemplateInstance;
 import io.quarkus.security.Authenticated;
 import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+
+import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -168,16 +172,102 @@ public class UserResource {
             List<Product> productList = productClient.getAllProducts();
             LOG.info("Received " + productList.size() + " products from Product Service");
 
-            return products.data("user", getCurrentUser())
-                    .data("products", productList);
+            return products.data("user", getCurrentUser()).data("products", productList);
         } catch (Exception e) {
             LOG.info("Error fetching products: " + e.getMessage());
-            return products.data("user", getCurrentUser())
-                    .data("products", List.of())
-                    .data("error", "Unable to load products: " + e.getMessage());
+            return products.data("user", getCurrentUser()).data("products", List.of()).data("error", "Unable to load products: " + e.getMessage());
         }
     }
 
+    @POST
+    @Path("/products/create")
+    @Authenticated
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response createProduct(
+            @FormParam("name") String name,
+            @FormParam("price") BigDecimal price,
+            @FormParam("weight") BigDecimal weight,
+            @FormParam("size") BigDecimal size,
+            @FormParam("manufacturer") String manufacturer,
+            @FormParam("metalId") Integer metalId,
+            @FormParam("categoryId") Integer categoryId) {
+
+        LOG.info("Creating new product: " + name);
+
+        try {
+            Product product = new Product();
+            product.setName(name);
+            product.setPrice(price);
+            product.setWeight(weight);
+            product.setSize(size);
+            product.setManufacturer(manufacturer);
+            product.setMetalId(metalId);
+            product.setCategoryId(categoryId);
+
+            Product created = productClient.createProduct(product);
+            LOG.info("Product created successfully: " + created.getProductId());
+
+            return Response.seeOther(URI.create("/products")).build();
+
+        } catch (Exception e) {
+            LOG.info("Error creating product: " + e.getMessage());
+            return Response.seeOther(URI.create("/products")).build();
+        }
+    }
+
+    @POST
+    @Path("/products/update")
+    @Authenticated
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response updateProduct(
+            @FormParam("productId") Integer productId,
+            @FormParam("name") String name,
+            @FormParam("price") BigDecimal price,
+            @FormParam("weight") BigDecimal weight,
+            @FormParam("size") BigDecimal size,
+            @FormParam("manufacturer") String manufacturer,
+            @FormParam("metalId") Integer metalId,
+            @FormParam("categoryId") Integer categoryId) {
+
+        LOG.info("Updating product: " + productId);
+
+        try {
+            Product product = new Product();
+            product.setProductId(productId);
+            product.setName(name);
+            product.setPrice(price);
+            product.setWeight(weight);
+            product.setSize(size);
+            product.setManufacturer(manufacturer);
+            product.setMetalId(metalId);
+            product.setCategoryId(categoryId);
+
+            productClient.updateProduct(productId, product);
+            LOG.info("Product updated successfully: " + productId);
+
+            return Response.seeOther(URI.create("/products")).build();
+        } catch (Exception e) {
+            LOG.info("Error updating product: " + e.getMessage());
+            return Response.seeOther(URI.create("/products")).build();
+        }
+    }
+
+    @POST
+    @Path("/products/delete/{id}")
+    @Authenticated
+    public Response deleteProduct(@PathParam("id") Integer id) {
+        LOG.info("Deleting product: " + id);
+
+        try {
+            productClient.deleteProduct(id);
+            LOG.info("Product deleted successfully: " + id);
+
+            return Response.seeOther(URI.create("/products")).build();
+        } catch (Exception e) {
+            LOG.info("Error deleting product: " + e.getMessage());
+            return Response.seeOther(URI.create("/products")).build();
+        }
+    }
     @GET
     @Path("/orders")
     @Authenticated
@@ -190,13 +280,10 @@ public class UserResource {
             List<Order> orderList = orderClient.getAllOrders();
             LOG.info("Received " + orderList.size() + " orders from Order Service");
 
-            return orders.data("user", getCurrentUser())
-                    .data("orders", orderList);
+            return orders.data("user", getCurrentUser()).data("orders", orderList);
         } catch (Exception e) {
             LOG.info("Error fetching orders: " + e.getMessage());
-            return orders.data("user", getCurrentUser())
-                    .data("orders", List.of())
-                    .data("error", "Unable to load orders: " + e.getMessage());
+            return orders.data("user", getCurrentUser()).data("orders", List.of()).data("error", "Unable to load orders: " + e.getMessage());
         }
     }
 
@@ -212,13 +299,10 @@ public class UserResource {
             List<Review> reviewList = reviewClient.getAllReviews();
             LOG.info("Received " + reviewList.size() + " reviews from Review Service");
 
-            return reviews.data("user", getCurrentUser())
-                    .data("reviews", reviewList);
+            return reviews.data("user", getCurrentUser()).data("reviews", reviewList);
         } catch (Exception e) {
             LOG.info("Error fetching reviews: " + e.getMessage());
-            return reviews.data("user", getCurrentUser())
-                    .data("reviews", List.of())
-                    .data("error", "Unable to load reviews: " + e.getMessage());
+            return reviews.data("user", getCurrentUser()).data("reviews", List.of()).data("error", "Unable to load reviews: " + e.getMessage());
         }
     }
 
