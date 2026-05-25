@@ -2,6 +2,7 @@ package com.yaloys.reviews.controllers;
 
 import com.yaloys.reviews.models.Review;
 import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.PermitAll;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -11,7 +12,9 @@ import java.util.List;
 @Path("/api/reviews")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Authenticated
+//@Authenticated
+@PermitAll
+
 public class ReviewResource {
 
     @GET

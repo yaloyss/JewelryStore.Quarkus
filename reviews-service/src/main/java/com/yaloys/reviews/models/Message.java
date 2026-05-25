@@ -1,11 +1,16 @@
 package com.yaloys.reviews.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "messages")
+@Getter
+@Setter
 public class Message extends PanacheEntityBase {
 
     @Id
@@ -15,6 +20,7 @@ public class Message extends PanacheEntityBase {
 
     @ManyToOne
     @JoinColumn(name = "discussion_id")
+    @JsonIgnore
     public Discussion discussion;
 
     @Column(columnDefinition = "TEXT", nullable = false)

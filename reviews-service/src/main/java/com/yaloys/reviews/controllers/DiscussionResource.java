@@ -3,6 +3,7 @@ package com.yaloys.reviews.controllers;
 import com.yaloys.reviews.models.Discussion;
 import com.yaloys.reviews.models.Message;
 import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.PermitAll;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -12,7 +13,8 @@ import java.util.List;
 @Path("/api/discussions")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Authenticated
+//@Authenticated
+@PermitAll
 public class DiscussionResource {
 
     @GET

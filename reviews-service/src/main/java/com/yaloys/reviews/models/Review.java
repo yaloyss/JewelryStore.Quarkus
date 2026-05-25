@@ -2,11 +2,15 @@ package com.yaloys.reviews.models;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "reviews")
+@Getter
+@Setter
 public class Review extends PanacheEntityBase {
 
     @Id

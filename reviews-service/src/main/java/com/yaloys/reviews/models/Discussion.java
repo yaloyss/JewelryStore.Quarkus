@@ -2,10 +2,14 @@ package com.yaloys.reviews.models;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import java.util.List;
 
 @Entity
 @Table(name = "discussions")
+@Getter
+@Setter
 public class Discussion extends PanacheEntityBase {
 
     @Id
