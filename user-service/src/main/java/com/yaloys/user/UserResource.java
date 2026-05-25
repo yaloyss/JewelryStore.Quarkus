@@ -10,6 +10,7 @@ import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import io.quarkus.security.Authenticated;
 import io.quarkus.security.identity.SecurityIdentity;
+import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -143,45 +144,30 @@ public class UserResource {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance index() {
-        LOG.info("Index page accessed");
-        if (securityIdentity.isAnonymous()) {
-            return index.instance();
-        }
-        return home.data("user", getCurrentUser());
+    public Response index() {
+        return Response.seeOther(URI.create("/index.html")).build();
     }
 
     @GET
     @Path("/home")
-    @Authenticated
+    @PermitAll
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance homePage() {
-        LOG.info("Home page accessed by: " + securityIdentity.getPrincipal().getName());
-        return home.data("user", getCurrentUser());
+    public Response homePage() {
+        return Response.seeOther(URI.create("/index.html")).build();
     }
 
     @GET
     @Path("/products")
-    @Authenticated
+    @PermitAll
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance productsPage() {
-        LOG.info("Products page accessed by: " + securityIdentity.getPrincipal().getName());
-
-        try {
-            LOG.info("Calling Product Service...");
-            List<Product> productList = productClient.getAllProducts();
-            LOG.info("Received " + productList.size() + " products from Product Service");
-
-            return products.data("user", getCurrentUser()).data("products", productList);
-        } catch (Exception e) {
-            LOG.info("Error fetching products: " + e.getMessage());
-            return products.data("user", getCurrentUser()).data("products", List.of()).data("error", "Unable to load products: " + e.getMessage());
-        }
+    public Response productsPage() {
+        return Response.seeOther(URI.create("/index.html")).build();
     }
 
     @POST
     @Path("/products/create")
-    @Authenticated
+//    @Authenticated
+    @PermitAll
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response createProduct(
             @FormParam("name") String name,
@@ -207,17 +193,18 @@ public class UserResource {
             Product created = productClient.createProduct(product);
             LOG.info("Product created successfully: " + created.getProductId());
 
-            return Response.seeOther(URI.create("/products")).build();
+            return Response.seeOther(URI.create("/index.html")).build();
 
         } catch (Exception e) {
             LOG.info("Error creating product: " + e.getMessage());
-            return Response.seeOther(URI.create("/products")).build();
+            return Response.seeOther(URI.create("/index.html")).build();
         }
     }
 
     @POST
     @Path("/products/update")
-    @Authenticated
+//    @Authenticated
+    @PermitAll
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response updateProduct(
             @FormParam("productId") Integer productId,
@@ -245,16 +232,17 @@ public class UserResource {
             productClient.updateProduct(productId, product);
             LOG.info("Product updated successfully: " + productId);
 
-            return Response.seeOther(URI.create("/products")).build();
+            return Response.seeOther(URI.create("/index.html")).build();
         } catch (Exception e) {
             LOG.info("Error updating product: " + e.getMessage());
-            return Response.seeOther(URI.create("/products")).build();
+            return Response.seeOther(URI.create("/index.html")).build();
         }
     }
 
     @POST
     @Path("/products/delete/{id}")
-    @Authenticated
+//    @Authenticated
+    @PermitAll
     public Response deleteProduct(@PathParam("id") Integer id) {
         LOG.info("Deleting product: " + id);
 
@@ -262,48 +250,26 @@ public class UserResource {
             productClient.deleteProduct(id);
             LOG.info("Product deleted successfully: " + id);
 
-            return Response.seeOther(URI.create("/products")).build();
+            return Response.seeOther(URI.create("/index.html")).build();
         } catch (Exception e) {
             LOG.info("Error deleting product: " + e.getMessage());
-            return Response.seeOther(URI.create("/products")).build();
+            return Response.seeOther(URI.create("/index.html")).build();
         }
     }
     @GET
     @Path("/orders")
-    @Authenticated
+    @PermitAll
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance ordersPage() {
-        LOG.info("Orders page accessed by: " + securityIdentity.getPrincipal().getName());
-
-        try {
-            LOG.info("Calling Order Service...");
-            List<Order> orderList = orderClient.getAllOrders();
-            LOG.info("Received " + orderList.size() + " orders from Order Service");
-
-            return orders.data("user", getCurrentUser()).data("orders", orderList);
-        } catch (Exception e) {
-            LOG.info("Error fetching orders: " + e.getMessage());
-            return orders.data("user", getCurrentUser()).data("orders", List.of()).data("error", "Unable to load orders: " + e.getMessage());
-        }
+    public Response ordersPage() {
+        return Response.seeOther(URI.create("/index.html")).build();
     }
 
     @GET
     @Path("/reviews")
-    @Authenticated
+    @PermitAll
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance reviewsPage() {
-        LOG.info("Reviews page accessed by: " + securityIdentity.getPrincipal().getName());
-
-        try {
-            LOG.info("Calling Review Service...");
-            List<Review> reviewList = reviewClient.getAllReviews();
-            LOG.info("Received " + reviewList.size() + " reviews from Review Service");
-
-            return reviews.data("user", getCurrentUser()).data("reviews", reviewList);
-        } catch (Exception e) {
-            LOG.info("Error fetching reviews: " + e.getMessage());
-            return reviews.data("user", getCurrentUser()).data("reviews", List.of()).data("error", "Unable to load reviews: " + e.getMessage());
-        }
+    public Response reviewsPage() {
+        return Response.seeOther(URI.create("/index.html")).build();
     }
 
     private Map<String, String> getCurrentUser() {

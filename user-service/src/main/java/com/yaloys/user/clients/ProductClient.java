@@ -8,7 +8,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import java.util.List;
 
 @Path("/api/products")
-@AccessToken
+//@AccessToken
 @RegisterRestClient(configKey = "product-service")
 public interface ProductClient {
 

@@ -11,7 +11,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import java.util.List;
 
 @Path("/api/orders")
-@AccessToken
+//@AccessToken
 @RegisterRestClient(configKey = "order-service")
 public interface OrderClient {
 

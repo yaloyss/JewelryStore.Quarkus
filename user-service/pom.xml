@@ -94,6 +94,10 @@
             <version>1.18.38</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-oidc-token-propagation-common</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
