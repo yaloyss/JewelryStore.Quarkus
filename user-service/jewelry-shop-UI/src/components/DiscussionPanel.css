@@ -1,0 +1,74 @@
+.discussion-panel {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.discussion-loading {
+  font-size: 0.85rem;
+  color: var(--gray);
+}
+
+.discussion-error {
+  color: var(--pink-dark);
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.discussion-title {
+  font-size: 0.9rem;
+  color: var(--black);
+  margin-bottom: 0.75rem;
+}
+
+.messages-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.message-item {
+  background: #fafafa;
+  border-left: 3px solid var(--pink);
+  padding: 0.65rem 0.85rem;
+  border-radius: 0 8px 8px 0;
+  animation: fadeIn 0.3s ease;
+}
+
+.message-item p {
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+.message-item time {
+  font-size: 0.75rem;
+  color: var(--gray);
+}
+
+.message-empty {
+  color: var(--gray);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.message-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.message-form textarea {
+  padding: 0.6rem;
+  border: 2px solid #eee;
+  border-radius: 10px;
+  resize: vertical;
+}
+
+.message-form textarea:focus {
+  outline: none;
+  border-color: var(--pink);
+}

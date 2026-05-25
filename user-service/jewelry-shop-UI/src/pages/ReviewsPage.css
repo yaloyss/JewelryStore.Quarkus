@@ -1,0 +1,54 @@
+.reviews-page .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.review-card {
+  padding: 1.5rem;
+}
+
+.review-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.review-top h3 {
+  color: var(--pink-dark);
+  margin-bottom: 0.35rem;
+}
+
+.stars {
+  color: var(--pink);
+  letter-spacing: 2px;
+  font-size: 1.1rem;
+}
+
+.review-body {
+  line-height: 1.7;
+  margin-bottom: 0.75rem;
+}
+
+.review-meta {
+  font-size: 0.85rem;
+  color: var(--gray);
+  margin-bottom: 0.75rem;
+}
+
+.discussion-toggle {
+  margin-top: 0.25rem;
+}
